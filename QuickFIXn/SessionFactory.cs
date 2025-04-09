@@ -15,13 +15,15 @@ public class SessionFactory
     protected IMessageStoreFactory _messageStoreFactory;
     protected ILogFactory _logFactory;
     protected IMessageFactory _messageFactory;
+    protected ISessionScheduleFactory _sessionScheduleFactory;
     protected Dictionary<string, DataDictionary.DataDictionary> _dictionariesByPath = new();
 
     public SessionFactory(
         IApplication app,
         IMessageStoreFactory storeFactory,
         ILogFactory? logFactory = null,
-        IMessageFactory? messageFactory = null)
+        IMessageFactory? messageFactory = null,
+        ISessionScheduleFactory? sessionScheduleFactory = null)
     {
         // TODO: for V2, consider ONLY instantiating MessageFactory in the Create() method,
         //   and removing instance var _messageFactory altogether.
@@ -33,6 +35,7 @@ public class SessionFactory
         _messageStoreFactory = storeFactory;
         _logFactory = logFactory ?? new NullLogFactory();
         _messageFactory = messageFactory ?? new DefaultMessageFactory();
+        _sessionScheduleFactory = sessionScheduleFactory ?? new DefaultSessionScheduleFactory();
     }
 
     private static bool DetectIfInitiator(SettingsDictionary settings)
@@ -105,7 +108,7 @@ public class SessionFactory
             _messageStoreFactory,
             sessionId,
             dd,
-            new SessionSchedule(settings),
+            _sessionScheduleFactory.Create(sessionId, settings),
             heartBtInt,
             _logFactory,
             sessionMsgFactory,

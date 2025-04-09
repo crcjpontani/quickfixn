@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace QuickFix
 {
-    public class SessionSchedule
+    public class SessionSchedule : ISessionSchedule
     {
         public TimeSpan? StartTime { get; }
         public TimeSpan? EndTime { get; }

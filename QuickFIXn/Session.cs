@@ -25,7 +25,7 @@ namespace QuickFix
 
         private readonly object _sync = new();
         private IResponder? _responder;
-        private readonly SessionSchedule _schedule;
+        private readonly ISessionSchedule _schedule;
         private readonly SessionState _state;
         private readonly IMessageFactory _msgFactory;
         private readonly bool _appDoesEarlyIntercept;
@@ -230,7 +230,7 @@ namespace QuickFix
             IMessageStoreFactory storeFactory,
             SessionID sessId,
             DataDictionaryProvider dataDictProvider,
-            SessionSchedule sessionSchedule,
+            ISessionSchedule sessionSchedule,
             int heartBtInt,
             ILogFactory logFactory,
             IMessageFactory msgFactory,

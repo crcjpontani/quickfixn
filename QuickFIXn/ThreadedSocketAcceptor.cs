@@ -32,17 +32,20 @@ namespace QuickFix
         /// <param name="settings"></param>
         /// <param name="logFactory">If null, a NullFactory will be used.</param>
         /// <param name="messageFactory">If null, a DefaultMessageFactory will be created (using settings parameters)</param>
+        /// <param name="sessionScheduleFactory">If null, a DefaultSessionScheduleFactory will be created.</param>
         public ThreadedSocketAcceptor(
             IApplication application,
             IMessageStoreFactory storeFactory,
             SessionSettings settings,
             ILogFactory? logFactory = null,
-            IMessageFactory? messageFactory = null)
+            IMessageFactory? messageFactory = null,
+            ISessionScheduleFactory? sessionScheduleFactory = null)
         {
             ILogFactory lf = logFactory ?? new NullLogFactory();
             IMessageFactory mf = messageFactory ?? new DefaultMessageFactory();
+            ISessionScheduleFactory ssf = sessionScheduleFactory ?? new DefaultSessionScheduleFactory();
             _settings = settings;
-            _sessionFactory = new SessionFactory(application, storeFactory, lf, mf);
+            _sessionFactory = new SessionFactory(application, storeFactory, lf, mf, ssf);
             _nonSessionLog = new NonSessionLog(lf);
 
             try

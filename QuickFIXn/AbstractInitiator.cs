@@ -29,12 +29,13 @@ namespace QuickFix
             IMessageStoreFactory storeFactory,
             SessionSettings settings,
             ILogFactory? logFactoryNullable,
-            IMessageFactory? messageFactoryNullable)
+            IMessageFactory? messageFactoryNullable,
+            ISessionScheduleFactory? sessionScheduleFactory)
         {
             _settings = settings;
             var logFactory = logFactoryNullable ?? new NullLogFactory();
             var msgFactory = messageFactoryNullable ?? new DefaultMessageFactory();
-            _sessionFactory = new SessionFactory(app, storeFactory, logFactory, msgFactory);
+            _sessionFactory = new SessionFactory(app, storeFactory, logFactory, msgFactory, sessionScheduleFactory);
             _nonSessionLog = new NonSessionLog(logFactory);
 
             HashSet<SessionID> definedSessions = _settings.GetSessions();
